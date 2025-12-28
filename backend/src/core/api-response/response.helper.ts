@@ -1,23 +1,23 @@
-import { Response } from "express";
+import type { Response } from "express";
 
 export const success = <T>(res: Response, data: T, status = 200) => {
-    res.status(status).json({
-        success: true,
-        data,
-        meta: res.locals.meta,
-    });
+  res.status(status).json({
+    success: true,
+    data,
+    meta: res.locals.meta,
+  });
 };
 
 export const failure = (
-    res: Response,
-    code: string,
-    status = 400,
-    message: string,
-    details?: unknown
+  res: Response,
+  code: string,
+  status = 400,
+  message: string,
+  details?: unknown,
 ) => {
-    res.status(status).json({
-        success: false,
-        error: { message, code, details },
-        meta: res.locals.meta,
-    });
+  res.status(status).json({
+    success: false,
+    error: { message, code, details },
+    meta: res.locals.meta,
+  });
 };
