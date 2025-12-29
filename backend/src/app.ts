@@ -4,8 +4,10 @@ import { failure, success } from "./core/api-response/response.helper.js";
 import { requestId } from "./middleware/request-id.middleware.js";
 import { errorHandler } from "./middleware/error-handler.middleware.js";
 import routes from "./routes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(requestId);
 app.use("/api/v1", routes);

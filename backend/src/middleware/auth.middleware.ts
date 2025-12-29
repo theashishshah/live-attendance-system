@@ -9,25 +9,24 @@ export const authenticate = async (
   next: NextFunction,
 ) => {
   try {
-    const authHeader = req.headers.authorization;
+    const accessToken = req.cookies.access_token;
 
-    if (!authHeader?.startsWith("Bearer ")) {
-      throw new AppError("UNAUTHORIZED", 401);
+    if (!accessToken) {
+      throw new AppError("UNAUTHORIZED", 401, "Token missing.");
     }
-
-    const token = authHeader.split(" ")[1];
-
-    if (!token) throw new AppError("UNAUTHORIZED", 401);
-
-    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload & {
+    const payload = jwt.verify(
+      accessToken,
+      process.env.JWT_SECRET!,
+    ) as JwtPayload & {
       role: string;
     };
 
-    if (!payload.sub) throw new AppError("UNAUTHORIZED", 401);
+    if (!payload.userId)
+      throw new AppError("UNAUTHORIZED", 401, "Token expired");
 
     //TODO: test it
     req.user = {
-      userId: payload.sub as string,
+      userId: payload.userId as string,
       role: payload.role,
     };
     next();
