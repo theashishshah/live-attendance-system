@@ -9,7 +9,6 @@ const routes = express.Router();
 routes.get("/login", loginHandler);
 routes.post("/signup", signupHandler);
 routes.get("/test", authenticate, (req: Request, res: Response) => {
-  console.log("what's request is having: ", req);
   return res.status(200).json({
     success: true,
     message: "User is authencticated",
