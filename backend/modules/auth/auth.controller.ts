@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { login, signup } from "./auth.service.js";
 import { success } from "../../src/core/api-response/response.helper.js";
 import { setAuthCookie } from "../../src/core/http/cookie.js";
+import { createUserSchema } from "../user/user.schema.js";
 
 export const signupHandler = async (
   req: Request,
@@ -9,8 +10,8 @@ export const signupHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const { email, role, password } = req.body;
-    const { user, accessToken } = await signup(email, password, role);
+    const data = createUserSchema.parse(req.body);
+    const { user, accessToken } = await signup({ ...data, role: "student" });
     setAuthCookie(res, accessToken);
 
     success(res, { user }, 201);
@@ -33,3 +34,9 @@ export const loginHandler = async (
     next(err);
   }
 };
+
+export const meHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {};

@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt";
-import { User } from "../user/user.schema.js";
+import { User } from "../user/user.model.js";
 import { AppError } from "../../src/core/errors/AppError.js";
 import { mapError } from "../../src/core/errors/error-maper.js";
 import { signAccessToken } from "./auth.jwt.js";
+import type { CreateUserInput } from "../user/user.schema.js";
 
 //TODO: implement access and refresh token as well
 
@@ -18,31 +19,17 @@ export type AuthApiResponse = {
 export type Role = "student" | "teacher";
 
 export const signup = async (
-  email: string,
-  password: string,
-  role: Role,
+  input: CreateUserInput,
 ): Promise<AuthApiResponse> => {
-  if (!email?.trim())
-    throw new AppError("VALIDATION_ERROR", 400, "Email is required");
-
-  if (!password?.trim())
-    throw new AppError("VALIDATION_ERROR", 400, "Password is required");
-
-  if (!["student", "teacher"].includes(role))
-    throw new AppError("VALIDATION_ERROR", 400, "Invalid role");
-
-  if (password.trim().length < 8)
-    throw new AppError("VALIDATION_ERROR", 400, "Password too short.");
-
-  const normalizeEmail = email.trim().toLowerCase();
+  const { email, password, role } = input;
 
   const passwordHash = await bcrypt.hash(password, 12);
 
   try {
     const user = await User.create({
-      email: normalizeEmail,
+      email,
       passwordHash,
-      role: role.trim().toLowerCase() as Role,
+      role,
     });
 
     const accessToken = signAccessToken({
