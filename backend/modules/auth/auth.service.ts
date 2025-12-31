@@ -93,7 +93,8 @@ export const login = async (
 
 export const me = async ({ userId }: { userId: string }) => {
   try {
-    const user = await User.findById({ userId }).select("email role createdAt");
+    const _id = new Object(userId);
+    const user = await User.findById({ _id }).select("email role createdAt");
     if (!user) {
       throw new AppError("NOT_FOUND", 404, "User not found");
     }
