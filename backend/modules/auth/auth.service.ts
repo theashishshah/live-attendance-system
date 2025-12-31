@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import { User } from "../user/user.model.js";
 import { AppError } from "../../src/core/errors/AppError.js";
-import { mapError } from "../../src/core/errors/error-maper.js";
 import { signAccessToken } from "./auth.jwt.js";
 import type { CreateUserInput } from "../user/user.schema.js";
 import type { CreateLoginInput } from "./auth.schema.js";
+import type { string } from "zod/v3";
 
 //TODO: implement access and refresh token as well
 
@@ -85,6 +85,24 @@ export const login = async (
         email: user.email,
         role: user.role,
       },
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const me = async ({ userId }: { userId: string }) => {
+  try {
+    const user = await User.findById({ userId }).select("email role createdAt");
+    if (!user) {
+      throw new AppError("NOT_FOUND", 404, "User not found");
+    }
+
+    return {
+      id: user._id.toString(),
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
     };
   } catch (error) {
     throw error;

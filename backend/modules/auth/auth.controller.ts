@@ -1,9 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
-import { login, signup } from "./auth.service.js";
+import { login, signup, me } from "./auth.service.js";
 import { success } from "../../src/core/api-response/response.helper.js";
 import { setAuthCookie } from "../../src/core/http/cookie.js";
 import { createUserSchema } from "../user/user.schema.js";
 import { createLoginSchema } from "./auth.schema.js";
+import { AppError } from "../../src/core/errors/AppError.js";
 
 export const signupHandler = async (
   req: Request,
@@ -40,4 +41,13 @@ export const meHandler = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) => {};
+) => {
+  try {
+    if (!req.user) throw new AppError("UNAUTHORIZED", 401);
+
+    const result = await me({ userId: req.user.userId });
+    return res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
