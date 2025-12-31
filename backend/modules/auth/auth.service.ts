@@ -100,10 +100,13 @@ export const me = async ({ userId }: { userId: string }) => {
     }
 
     return {
-      id: user._id.toString(),
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt,
+      sucess: true,
+      user: {
+        id: user._id.toString(),
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
     };
   } catch (error) {
     throw error;
