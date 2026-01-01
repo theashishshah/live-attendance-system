@@ -6,7 +6,6 @@ import {
   failure,
   success,
 } from "../../src/core/api-response/response.helper.js";
-import { throwDeprecation } from "process";
 
 export const createClassHandler = async (
   req: Request,
