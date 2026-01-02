@@ -5,7 +5,7 @@ import { AppError } from "../../src/core/errors/AppError.js";
 import {
   sendFailure,
   sendResponse,
-} from "../../src/core/api-response/response.helper.js";
+} from "../../src/core/api-response/api-responder.js";
 
 export const createClassHandler = async (
   req: Request,

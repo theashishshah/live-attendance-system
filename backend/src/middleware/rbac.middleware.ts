@@ -1,24 +1,16 @@
 import type { Request, Response, NextFunction } from "express";
-import { failure } from "../core/api-response/response.helper.js";
+import { sendFailure } from "../core/api-response/api-responder.js";
 
-export const requireTeacher = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (req.user && req.user.role !== "teacher")
-    return failure(res, "FORBIDDEN", 401, "Forbidden, teacher access required");
+export const requireTeacher = (req: Request, res: Response, next: NextFunction) => {
+    if (req.user && req.user.role !== "teacher")
+        return sendFailure(res, "FORBIDDEN", 401, "Forbidden, teacher access required");
 
-  next();
+    next();
 };
 
-export const requireStudent = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (req.user && req.user.role !== "student")
-    return failure(res, "FORBIDDEN", 401, "Forbidden, student access required");
+export const requireStudent = (req: Request, res: Response, next: NextFunction) => {
+    if (req.user && req.user.role !== "student")
+        return sendFailure(res, "FORBIDDEN", 401, "Forbidden, student access required");
 
-  next();
+    next();
 };

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { login, signup, me } from "./auth.service.js";
-import { sendResponse } from "../../src/core/api-response/response.helper.js";
-import { setAuthCookie } from "../../src/core/http/cookie.js";
+import { sendResponse } from "../../src/core/api-response/api-responder.js";
+import { clearAuthCookie, setAuthCookie } from "../../src/core/http/cookie.js";
 import { createUserSchema } from "../user/user.schema.js";
 import { createLoginSchema } from "./auth.schema.js";
 import { AppError } from "../../src/core/errors/AppError.js";
@@ -47,6 +47,22 @@ export const meHandler = async (
 
     const result = await me({ userId: req.user.userId });
     return res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    clearAuthCookie(res);
+    return sendResponse(res, {
+      success: true,
+      message: "user logged out.",
+    });
   } catch (error) {
     next(error);
   }

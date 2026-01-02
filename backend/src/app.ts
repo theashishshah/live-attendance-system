@@ -1,6 +1,6 @@
 import express from "express";
 import type { Request, Response } from "express";
-import { sendResponse, sendFailure } from "./core/api-response/response.helper.js";
+import { sendResponse, sendFailure } from "./core/api-response/api-responder.js";
 import { requestId } from "./middleware/request-id.middleware.js";
 import { errorHandler } from "./middleware/error-handler.middleware.js";
 import router from "./routes.js";

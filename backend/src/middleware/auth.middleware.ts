@@ -26,6 +26,8 @@ export const authenticate = async (
       throw new AppError("UNAUTHORIZED", 401, "Token expired");
 
     //TODO: test it
+    console.log("authenticate server");
+
     req.user = {
       userId: payload.userId as string,
       role: payload.role as Role,
