@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { login, signup, me } from "./auth.service.js";
-import { success } from "../../src/core/api-response/response.helper.js";
+import { sendResponse } from "../../src/core/api-response/response.helper.js";
 import { setAuthCookie } from "../../src/core/http/cookie.js";
 import { createUserSchema } from "../user/user.schema.js";
 import { createLoginSchema } from "./auth.schema.js";
@@ -16,7 +16,7 @@ export const signupHandler = async (
     const { user, accessToken } = await signup({ ...data, role: "student" });
     setAuthCookie(res, accessToken);
 
-    success(res, { user }, 201);
+    sendResponse(res, { user }, 201);
   } catch (error) {
     next(error);
   }
@@ -31,7 +31,7 @@ export const loginHandler = async (
     const data = createLoginSchema.parse(req.body);
     const { user, accessToken } = await login(data);
     setAuthCookie(res, accessToken);
-    success(res, { user }, 200);
+    sendResponse(res, { user }, 200);
   } catch (err) {
     next(err);
   }

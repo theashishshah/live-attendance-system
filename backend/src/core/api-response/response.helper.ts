@@ -1,6 +1,6 @@
 import type { Response } from "express";
 
-export const success = <T>(res: Response, data: T, status = 200) => {
+export const sendResponse = <T>(res: Response, data: T, status = 200) => {
   res.status(status).json({
     success: true,
     data,
@@ -8,7 +8,7 @@ export const success = <T>(res: Response, data: T, status = 200) => {
   });
 };
 
-export const failure = (
+export const sendFailure = (
   res: Response,
   code: string,
   status = 400,

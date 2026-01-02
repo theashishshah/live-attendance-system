@@ -3,8 +3,8 @@ import { addStudentSchema, createClassSchema } from "./class.schema.js";
 import { addStudentToClass, createClass } from "./class.service.js";
 import { AppError } from "../../src/core/errors/AppError.js";
 import {
-  failure,
-  success,
+  sendFailure,
+  sendResponse,
 } from "../../src/core/api-response/response.helper.js";
 
 export const createClassHandler = async (
@@ -18,7 +18,7 @@ export const createClassHandler = async (
 
     const cls = await createClass(body.className, req.user.userId);
 
-    return success(res, cls);
+    return sendResponse(res, cls);
   } catch (error) {
     next(error);
   }
@@ -42,9 +42,9 @@ export const addStudentHandler = async (
     );
 
     if (!cls)
-      return failure(res, "INVALID", 403, "Forbidden, not class teacher");
+      return sendFailure(res, "INVALID", 403, "Forbidden, not class teacher");
 
-    return success(res, cls);
+    return sendResponse(res, cls);
   } catch (error) {
     next(error);
   }
