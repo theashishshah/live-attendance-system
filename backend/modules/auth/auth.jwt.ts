@@ -26,6 +26,18 @@ export const signAccessToken = (payload: AccessTokenPayload): string => {
   return token;
 };
 
+export const verifyAccessToken = (token: string): AccessTokenPayload => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not configured");
+  }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+    issuer: "live attendance system",
+    audience: "access",
+  }) as AccessTokenPayload;
+  return decoded;
+};
+
 export const signRefreshToken = (payload: RefreshTokenPayload): string => {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT_SECRET is not configured");
@@ -38,4 +50,16 @@ export const signRefreshToken = (payload: RefreshTokenPayload): string => {
   });
 
   return token;
+};
+
+export const verifyRefreshToken = (token: string): RefreshTokenPayload => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not configured");
+  }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+    issuer: "live attendance system",
+    audience: "refresh",
+  }) as RefreshTokenPayload;
+  return decoded;
 };
