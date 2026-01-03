@@ -4,7 +4,6 @@ import { AppError } from "../../src/core/errors/AppError.js";
 import { signAccessToken } from "./auth.jwt.js";
 import type { CreateUserInput } from "../user/user.schema.js";
 import type { CreateLoginInput } from "./auth.schema.js";
-import type { string } from "zod/v3";
 
 //TODO: implement access and refresh token as well
 
